@@ -1,0 +1,30 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Code", "Code", "{C0F5C967-67F7-49EC-8363-3248D2530703}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Db", "Db", "{EA095822-4F2F-4EA7-AB25-93E343049F15}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TodoList.Infrastructure", "TodoList.Infrastructure\TodoList.Infrastructure.csproj", "{A570CCA7-15BA-4163-9B2F-1B17451CA11E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TodoList.Application", "TodoList.Application\TodoList.Application.csproj", "{A43E1EDF-9345-455E-B079-8809DD177E93}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A570CCA7-15BA-4163-9B2F-1B17451CA11E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A570CCA7-15BA-4163-9B2F-1B17451CA11E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A570CCA7-15BA-4163-9B2F-1B17451CA11E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A570CCA7-15BA-4163-9B2F-1B17451CA11E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A43E1EDF-9345-455E-B079-8809DD177E93}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A43E1EDF-9345-455E-B079-8809DD177E93}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A43E1EDF-9345-455E-B079-8809DD177E93}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A43E1EDF-9345-455E-B079-8809DD177E93}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{A570CCA7-15BA-4163-9B2F-1B17451CA11E} = {C0F5C967-67F7-49EC-8363-3248D2530703}
+		{A43E1EDF-9345-455E-B079-8809DD177E93} = {C0F5C967-67F7-49EC-8363-3248D2530703}
+	EndGlobalSection
+EndGlobal
