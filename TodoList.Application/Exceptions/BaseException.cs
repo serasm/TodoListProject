@@ -12,8 +12,7 @@ public abstract class BaseException : Exception,
     public virtual LogEventLevel Severity { get; set; } = LogEventLevel.Information;
     public virtual string UserMessage { get; set; } = ErrorMessageConsts.Default;
 
-    public BaseException()
-    {
-        
-    }
+    public BaseException() {}
+
+    public BaseException(Exception ex) : base(ex.Message, ex) {}
 }

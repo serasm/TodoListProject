@@ -1,8 +1,8 @@
-﻿using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
+﻿using System.Security.Claims;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using TodoList.Api.Filters.Helpers;
+using TodoList.Application.Exceptions;
 using TodoList.Application.Services;
 
 namespace TodoList.Api.Filters;

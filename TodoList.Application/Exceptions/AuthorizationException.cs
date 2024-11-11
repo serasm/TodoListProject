@@ -1,8 +1,7 @@
 ﻿using System.Net;
 using Serilog.Events;
-using TodoList.Application.Exceptions;
 
-namespace TodoList.Api.Filters;
+namespace TodoList.Application.Exceptions;
 
 public class AuthorizationException : BaseException
 {
@@ -16,4 +15,6 @@ public class AuthorizationException : BaseException
     {
         userMessage = userMessage;
     }
+
+    public AuthorizationException(Exception exception) : base(exception) {}
 }

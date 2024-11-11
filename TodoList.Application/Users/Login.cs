@@ -7,7 +7,7 @@ namespace TodoList.Application.Users;
 
 public class LoginRequest : IRequest<string>
 {
-    public string AuthorizationString { get; set; }
+    public readonly string AuthorizationString;
 
     public LoginRequest(string authorizationString)
     {
@@ -21,6 +21,18 @@ public class LoginHandler : IRequestHandler<LoginRequest, string>
     private readonly IUserRepository _userRepository;
     private readonly IHashService _hashService;
     private readonly IAuthenticationService _authenticationService;
+
+    public LoginHandler(
+        IHeaderAccessService headerAccessService,
+        IUserRepository userRepository,
+        IHashService hashService,
+        IAuthenticationService authenticationService)
+    {
+        _headerAccessService = headerAccessService ?? throw new ArgumentNullException(nameof(headerAccessService));
+        _userRepository = userRepository ?? throw new ArgumentNullException(nameof(userRepository));
+        _hashService = hashService ?? throw new ArgumentNullException(nameof(hashService));
+        _authenticationService = authenticationService ?? throw new ArgumentNullException(nameof(authenticationService));
+    }
     
     public Task<string> Handle(LoginRequest request, CancellationToken cancellationToken)
     {

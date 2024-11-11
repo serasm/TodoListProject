@@ -1,6 +1,8 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Text;
 using Microsoft.IdentityModel.Tokens;
+using TodoList.Application.Exceptions;
 using TodoList.Application.Services;
 using TodoList.Core.Models;
 
@@ -11,10 +13,10 @@ public class AuthenticationService : IAuthenticationService
     private readonly AuthenticationConfig _config;
     private readonly SymmetricSecurityKey _key;
 
-    public AuthenticationService(AuthenticationConfig config, SymmetricSecurityKey key)
+    public AuthenticationService(AuthenticationConfig config)
     {
         _config = config ?? throw new ArgumentNullException(nameof(config));
-        _key = key ?? throw new ArgumentNullException(nameof(key));
+        _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config.JwtSignatureSecret));
     }
 
     public string AccessRole { get; } = "Access";
@@ -28,7 +30,26 @@ public class AuthenticationService : IAuthenticationService
 
     public JwtSecurityToken ValidateSignature(string header)
     {
-        throw new NotImplementedException();
+        try
+        {
+            var tokenValidationParameters = new TokenValidationParameters()
+            {
+                ValidAudiences = new string[] { null },
+                ValidIssuers = new string[] { _config.JwtIssuer },
+                IssuerSigningKey = _key
+            };
+            tokenValidationParameters.ValidateAudience = false;
+        
+            var tokenHandler = new JwtSecurityTokenHandler();
+            
+            tokenHandler.ValidateToken(header, tokenValidationParameters, out var validatedToken);
+            
+            return validatedToken as JwtSecurityToken;
+        }
+        catch (Exception ex)
+        {
+            throw new AuthorizationException(ex);
+        }
     }
 
     private ClaimsIdentity CreateClaimsIdentity(User user, string role) => new ClaimsIdentity(new Claim[]
