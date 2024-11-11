@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using TodoList.Api.Filters;
 
 namespace TodoList.Api.Controllers;
 
@@ -19,6 +20,7 @@ public class WeatherForecastController : ControllerBase
     }
 
     [HttpGet(Name = "GetWeatherForecast")]
+    [BearerAuthorizationFilter]
     public IEnumerable<WeatherForecast> Get()
     {
         return Enumerable.Range(1, 5).Select(index => new WeatherForecast

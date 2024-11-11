@@ -1,9 +1,11 @@
-﻿namespace TodoList.Core.Models;
+﻿using Microsoft.AspNetCore.Identity;
 
-public class User
+namespace TodoList.Core.Models;
+
+public class User : IdentityUser<int>
 {
     public int Id { get; set; }
     public string Username { get; set; }
     public string Password { get; set; }
-    public bool LoginAttempts { get; set; }
+    public string Email { get; set; }
 }

@@ -1,10 +1,12 @@
 ﻿using Autofac;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Quartz;
 using Quartz.Impl;
 using TodoList.Infrastructure.Database;
 using TodoList.Infrastructure.Quartz;
 using TodoList.Infrastructure.Quartz.Jobs;
+using TodoList.Infrastructure.Services;
 
 namespace TodoList.Infrastructure;
 
@@ -12,6 +14,7 @@ public static class ApplicationStartup
 {
     public static void Initialize(
         this ContainerBuilder containerBuilder,
+        AuthenticationConfig authConfig,
         string connectionString,
         bool runQuartz = true)
     {
@@ -20,14 +23,14 @@ public static class ApplicationStartup
             StartQuartz(connectionString);
         }
 
-        containerBuilder.CreateAutofacServiceProvider(connectionString);
+        containerBuilder.CreateAutofacServiceProvider(authConfig);
     }
     
     private static void CreateAutofacServiceProvider(
             this ContainerBuilder container,
-            string connectionString)
+            AuthenticationConfig authConfig)
     {
-        
+        container.RegisterModule(new ServicesModule(authConfig));
     }
 
     private static void StartQuartz(

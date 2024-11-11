@@ -18,6 +18,7 @@ public class UserNotificationJob : IJob
     
     public Task Execute(IJobExecutionContext context)
     {
-        return _requestExecutor.Execute();
+        //return _requestExecutor.Execute();
+        return Task.CompletedTask;
     }
 }
