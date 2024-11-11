@@ -1,22 +1,23 @@
 ﻿using MediatR;
 using Quartz;
 using Serilog;
+using TodoList.Infrastructure.Processing;
 
 namespace TodoList.Infrastructure.Quartz.Jobs;
 
 public class UserNotificationJob : IJob
 {
-    private readonly IMediator _mediator;
+    private readonly IRequestExecutor _requestExecutor;
     private readonly ILogger _logger;
     
-    public UserNotificationJob(IMediator mediator, ILogger logger)
+    public UserNotificationJob(IRequestExecutor requestExecutor, ILogger logger)
     {
-        _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
+        _requestExecutor = requestExecutor ?? throw new ArgumentNullException(nameof(requestExecutor));
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
     }
     
     public Task Execute(IJobExecutionContext context)
     {
-        throw new NotImplementedException();
+        return _requestExecutor.Execute();
     }
 }

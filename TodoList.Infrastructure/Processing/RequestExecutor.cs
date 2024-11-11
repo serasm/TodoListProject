@@ -3,7 +3,7 @@ using MediatR;
 
 namespace TodoList.Infrastructure.Processing;
 
-internal interface IRequestExecutor
+public interface IRequestExecutor
 {
     Task Execute(IRequest command);
     Task<TResult> Execute<TResult>(IRequest<TResult> command);
