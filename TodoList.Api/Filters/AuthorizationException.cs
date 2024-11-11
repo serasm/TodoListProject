@@ -11,4 +11,9 @@ public class AuthorizationException : BaseException
     public override HttpStatusCode StatusCode { get; set; } = HttpStatusCode.Unauthorized;
 
     public AuthorizationException() {}
+
+    public AuthorizationException(string userMessage)
+    {
+        userMessage = userMessage;
+    }
 }

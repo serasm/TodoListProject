@@ -1,4 +1,7 @@
-﻿namespace TodoList.Api.Filters.Helpers;
+﻿using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+
+namespace TodoList.Api.Filters.Helpers;
 
 public static class AuthorizationHelperMethods
 {
@@ -17,4 +20,6 @@ public static class AuthorizationHelperMethods
         
         return requestToken;
     }
+    
+    public static ClaimsIdentity BuildClaimsIdentity(this JwtSecurityToken jwtSecurityToken) => new ClaimsIdentity(jwtSecurityToken?.Claims, BearerSchemaName, "unique_name", "Access");
 }

@@ -1,6 +1,8 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using TodoList.Api.Filters.Helpers;
 using TodoList.Application.Services;
 
 namespace TodoList.Api.Filters;
@@ -22,11 +24,27 @@ public abstract class AbstractAuthorizationFilter : Attribute, IAuthorizationFil
             throw new AuthorizationException();
         }
     }
-    
-    protected virtual JwtSecurityToken ValidateSignature(string header) => _authenticationService.ValidateSignature(header);
 
     private bool IsUserAuthorized(HttpContext httpContext)
     {
-        return true;
+        var authHeader = httpContext.FetchBearer();
+
+        if (authHeader == null)
+        {
+            throw new AuthorizationException("Authorization header is missing.");
+        }
+        
+        _authenticationService = httpContext.RequestServices.GetService<IAuthenticationService>();
+
+        var token = _authenticationService.ValidateSignature(authHeader);
+
+        if (token is null)
+            throw new AuthorizationException("Token is empty.");
+            
+        var claimsIdentity = token.BuildClaimsIdentity();
+                
+        var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
+
+        return claimsPrincipal.HasClaim(claim => claim.Type == ClaimTypes.Role && Role.Equals(claim.Value, StringComparison.InvariantCultureIgnoreCase));
     }
 }
