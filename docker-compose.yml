@@ -1,0 +1,47 @@
+﻿networks:
+  mydev:
+    name: mydev
+
+services:
+  db:
+    container_name: postgres_container
+    image: postgres:15.1-alpine3.16
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: testdb
+      PGDATA: /var/lib/postgresql/data
+    ports:
+      - '5432:5432'
+    networks:
+      - mydev
+        
+  pgadmin:
+    container_name: pgadmin_container
+    image: dpage/pgadmin4
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: postgres
+    ports:
+      - "5050:80"
+    depends_on:
+      - db
+    networks:
+      - mydev
+  
+  todolist.api:
+    image: todolist.api
+    build:
+      context: .
+      dockerfile: TodoList.Api/Dockerfile
+    restart: always
+    ports:
+      - '7000:80'
+    depends_on:
+      - db
+    networks:
+      - mydev
+    environment:
+      - 'ConnectionStrings:DefaultConnection=User ID = postgres;Password=postgres;Server=db;Port=5432;Database=testdb;Integrated Security=true;Pooling=true'

@@ -45,13 +45,9 @@ public static class ApplicationStartup
 
         container.RegisterModule(new QuartzModule());
 
-        container.Register(c =>
-        {
-            var dbContextOptionsBuilder = new DbContextOptionsBuilder<TodoContext>();
-            dbContextOptionsBuilder.UseNpgsql(connectionString);
-
-            return new TodoContext(dbContextOptionsBuilder.Options);
-        }).AsSelf().InstancePerLifetimeScope();
+        container.RegisterType<SqlConnectionFactory>().As<ISqlConnectionFactory>()
+            .WithParameter("connectionString", connectionString)
+            .InstancePerLifetimeScope();
 
         scheduler.JobFactory = new JobFactory(container.Build());
 

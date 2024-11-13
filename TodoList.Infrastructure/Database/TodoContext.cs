@@ -10,7 +10,7 @@ public class TodoContext : IdentityDbContext<User, IdentityRole<int>, int>
     public DbSet<Todo> Todos { get; set; }
     public DbSet<UserTodo> UserTodos { get; set; }
     
-    public TodoContext(): base() {}
+    private TodoContext() {}
 
     public TodoContext(DbContextOptions<TodoContext> options): base(options) {}
 
