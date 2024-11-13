@@ -16,8 +16,11 @@ public class DatabaseModule : Autofac.Module
     
     protected override void Load(ContainerBuilder builder)
     {
-        builder.RegisterType<UsersRepository>().As<IUsersRepository>();
-        builder.RegisterType<TodosRepository>().As<ITodosRepository>();
-        builder.RegisterType<UserTodosRepository>().As<IUserTodosRepository>();
+        builder.RegisterType<UsersRepository>().As<IUsersRepository>()
+            .InstancePerLifetimeScope();
+        builder.RegisterType<TodosRepository>().As<ITodosRepository>()
+            .InstancePerLifetimeScope();
+        builder.RegisterType<UserTodosRepository>().As<IUserTodosRepository>()
+            .InstancePerLifetimeScope();
     }
 }

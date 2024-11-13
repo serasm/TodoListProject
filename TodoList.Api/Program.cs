@@ -1,5 +1,6 @@
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
+using TodoList.Api.Services;
 using TodoList.Infrastructure;
 using TodoList.Infrastructure.Services;
 
@@ -16,6 +17,8 @@ builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory())
     .ConfigureContainer<ContainerBuilder>(containerBuilder =>
     {
         containerBuilder.Initialize(builder.Configuration.GetSection("AuthenticationConfig").Get<AuthenticationConfig>(), string.Empty, false);
+        containerBuilder.RegisterType<HttpContextAccessorWrapper>().As<IHttpContextAccessorWrapper>()
+            .InstancePerLifetimeScope();
     });
 
 var app = builder.Build();

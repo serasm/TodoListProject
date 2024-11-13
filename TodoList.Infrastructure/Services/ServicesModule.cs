@@ -14,9 +14,12 @@ public class ServicesModule : Autofac.Module
     
     protected override void Load(ContainerBuilder builder)
     {
-        builder.RegisterType<HeaderAccessService>().As<IHeaderAccessService>();
-        builder.RegisterType<HashService>().As<IHashService>();
-        builder.RegisterType<AuthenticationService>().As<IAuthenticationService>();
+        builder.RegisterType<HeaderAccessService>().As<IHeaderAccessService>()
+            .InstancePerLifetimeScope();
+        builder.RegisterType<HashService>().As<IHashService>()
+            .InstancePerLifetimeScope();
+        builder.RegisterType<AuthenticationService>().As<IAuthenticationService>()
+            .InstancePerLifetimeScope();
         builder.RegisterInstance(_authenticationConfig);
     }
 }
