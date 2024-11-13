@@ -12,8 +12,8 @@ public class UserTodosRepository : IUserTodosRepository
     {
         _context = context ?? throw new ArgumentNullException(nameof(context));
     }
-    
-    public IQueryable<UserTodo> Get()
+
+    public IQueryable<UserTodo> GetAllWaiting()
     {
         return _context.UserTodos.AsQueryable();
     }

@@ -22,4 +22,9 @@ public class UsersRepository : IUsersRepository
     {
         return _userManager.FindByNameAsync(username);
     }
+
+    public Task<User?> GetById(int userId)
+    {
+        return _userManager.FindByIdAsync(userId.ToString());
+    }
 }

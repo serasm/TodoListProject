@@ -17,4 +17,9 @@ public class TodosRepository : ITodosRepository
         await _context.Todos.AddAsync(item);
         await _context.SaveChangesAsync();
     }
+
+    public Task<IQueryable<Todo>> GetForUser(int userId)
+    {
+        return Task.FromResult(_context.Todos.Where(x => x.OwnerId == userId));
+    }
 }
