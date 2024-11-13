@@ -18,30 +18,30 @@ public class LoginRequest : IRequest<string>
 public class LoginHandler : IRequestHandler<LoginRequest, string>
 {
     private readonly IHeaderAccessService _headerAccessService;
-    private readonly IUserRepository _userRepository;
+    private readonly IUsersRepository _usersRepository;
     private readonly IHashService _hashService;
     private readonly IAuthenticationService _authenticationService;
 
     public LoginHandler(
         IHeaderAccessService headerAccessService,
-        IUserRepository userRepository,
+        IUsersRepository usersRepository,
         IHashService hashService,
         IAuthenticationService authenticationService)
     {
         _headerAccessService = headerAccessService ?? throw new ArgumentNullException(nameof(headerAccessService));
-        _userRepository = userRepository ?? throw new ArgumentNullException(nameof(userRepository));
+        _usersRepository = usersRepository ?? throw new ArgumentNullException(nameof(usersRepository));
         _hashService = hashService ?? throw new ArgumentNullException(nameof(hashService));
         _authenticationService = authenticationService ?? throw new ArgumentNullException(nameof(authenticationService));
     }
     
-    public Task<string> Handle(LoginRequest request, CancellationToken cancellationToken)
+    public async Task<string> Handle(LoginRequest request, CancellationToken cancellationToken)
     {
         var auth = _headerAccessService.GetBasicAuthorizationHeaderParams(request.AuthorizationString);
 
         if (auth == null)
             throw new AuthenticationException();
 
-        var user = _userRepository.GetByUsername(auth.Username);
+        var user = await _usersRepository.GetByUsername(auth.Username);
 
         if (user == null)
             throw new AuthenticationException();
@@ -49,6 +49,6 @@ public class LoginHandler : IRequestHandler<LoginRequest, string>
         if (!_hashService.CompareHash(user, auth.Password, user.Password))
             throw new AuthenticationException();
 
-        return Task.FromResult(_authenticationService.GenerateSignedToken(user));
+        return _authenticationService.GenerateSignedToken(user);
     }
 }

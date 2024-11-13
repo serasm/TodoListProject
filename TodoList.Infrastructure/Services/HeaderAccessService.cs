@@ -7,10 +7,12 @@ namespace TodoList.Infrastructure.Services;
 public class HeaderAccessService : IHeaderAccessService
 {
     private readonly AuthenticationConfig _authenticationConfig;
+    private readonly IHttpContextAccessorWrapper _httpContextAccessorWrapper;
 
-    public HeaderAccessService(AuthenticationConfig authenticationConfig)
+    public HeaderAccessService(AuthenticationConfig authenticationConfig, IHttpContextAccessorWrapper httpContextAccessorWrapper)
     {
         _authenticationConfig = authenticationConfig ?? throw new ArgumentNullException(nameof(authenticationConfig));
+        _httpContextAccessorWrapper = httpContextAccessorWrapper ?? throw new ArgumentNullException(nameof(httpContextAccessorWrapper));
     }
     
     public HeaderUserCredentials GetBasicAuthorizationHeaderParams(string authorizationHeader)
@@ -27,4 +29,6 @@ public class HeaderAccessService : IHeaderAccessService
         var loginData = credentials.Split(':');
         return new HeaderUserCredentials(loginData[0], loginData[1]);
     }
+
+    public int? GetUserId() => _httpContextAccessorWrapper.UserId;
 }

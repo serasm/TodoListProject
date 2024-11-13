@@ -1,9 +1,15 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
+using TodoList.Core.Models;
 
 namespace TodoList.Infrastructure.Database;
 
-public class TodoContext : DbContext
+public class TodoContext : IdentityDbContext<User, IdentityRole<int>, int>
 {
+    public DbSet<Todo> Todos { get; set; }
+    public DbSet<UserTodo> UserTodos { get; set; }
+    
     public TodoContext(): base() {}
 
     public TodoContext(DbContextOptions<TodoContext> options): base(options) {}

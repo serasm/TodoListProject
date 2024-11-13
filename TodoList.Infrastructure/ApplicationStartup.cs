@@ -23,14 +23,16 @@ public static class ApplicationStartup
             StartQuartz(connectionString);
         }
 
-        containerBuilder.CreateAutofacServiceProvider(authConfig);
+        containerBuilder.CreateAutofacServiceProvider(authConfig, connectionString);
     }
     
     private static void CreateAutofacServiceProvider(
             this ContainerBuilder container,
-            AuthenticationConfig authConfig)
+            AuthenticationConfig authConfig,
+            string connectionString)
     {
         container.RegisterModule(new ServicesModule(authConfig));
+        container.RegisterModule(new DatabaseModule(connectionString));
     }
 
     private static void StartQuartz(
