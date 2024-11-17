@@ -15,6 +15,6 @@ public class UserTodosRepository : IUserTodosRepository
 
     public IQueryable<UserTodo> GetAllWaiting()
     {
-        return _context.UserTodos.AsQueryable();
+        throw new NotImplementedException();
     }
 }

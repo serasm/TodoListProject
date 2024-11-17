@@ -27,17 +27,31 @@ public class DatabaseModule : Autofac.Module
         builder.RegisterType<UserTodosRepository>().As<IUserTodosRepository>()
             .InstancePerLifetimeScope();
         
-        var dbContextOptionsBuilder = new DbContextOptionsBuilder<TodoContext>();
-        dbContextOptionsBuilder.UseNpgsql(_connectionString);
-                
-        var ctx = new TodoContext(dbContextOptionsBuilder.Options);
+        
         
         builder
-            .Register(c => ctx)
+            .Register(c =>
+            {
+                var dbContextOptionsBuilder = new DbContextOptionsBuilder<TodoContext>();
+                dbContextOptionsBuilder.UseNpgsql(_connectionString, b => b.MigrationsAssembly(typeof(TodoContext).Assembly.FullName));
+                
+                return new TodoContext(dbContextOptionsBuilder.Options);
+            })
             .AsSelf()
             .As<DbContext>()
+            .As<IdentityDbContext<User, IdentityRole<int>, int>>()
             .InstancePerLifetimeScope();
-        builder.Register<UserStore<User, IdentityRole<int>, TodoContext, int>>(c => new UserStore<User, IdentityRole<int>, TodoContext, int>(ctx)).AsImplementedInterfaces();
-        builder.RegisterType<UserManager<User>>();
+        
+         builder.Register<UserStore<User, IdentityRole<int>, TodoContext, int>>(c =>
+                new UserStore<User, IdentityRole<int>, TodoContext, int>(c.Resolve<TodoContext>()))
+            .AsSelf()
+            .AsImplementedInterfaces()
+            .InstancePerLifetimeScope();
+
+         /*builder.RegisterType<UserStore<User, IdentityRole<int>, TodoContext, int>>()
+             .AsSelf()
+             .AsImplementedInterfaces()
+             .InstancePerLifetimeScope();*/
+        builder.RegisterType<UserManager<User>>().AsSelf().InstancePerLifetimeScope();
     }
 }
